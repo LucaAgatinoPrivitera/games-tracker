@@ -1,15 +1,13 @@
 // import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './views/home'; // Importa i tuoi componenti
 // import About from './views/about';
 
 import './App.css'
 import './components/Navbar'
 import './components/Main'
 import Navbar from './components/Navbar'
-import Main from './components/Main'
+// import Main from './components/Main'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -18,13 +16,10 @@ function App() {
     <>
       <Navbar></Navbar>
 
-      <Main></Main>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/about" element={<About />} /> */}
-        </Routes>
-      </Router>
+      {/* <Main></Main> */}
+
+
+
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -47,9 +42,9 @@ function App() {
       </p> */}
 
       {/* Body */}
-      <div className='lg:container mx-auto'>
+      {/* <div className='lg:container mx-auto'>
         <h1>GamesTracker</h1>
-      </div>
+      </div> */}
 
     </>
   )
