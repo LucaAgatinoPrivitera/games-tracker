@@ -36,6 +36,13 @@
   }
 }
 
+.background{
+  background-color: #0A100D;
+}
+.text-for-background{
+  color: #F0F0F0;
+}
+
 .card {
   padding: 2em;
 }
