@@ -15,6 +15,10 @@ const GameFeed = () => {
   const gamesPerPage = 30; // Numero di giochi per pagina
 
   useEffect(() => {
+
+    // Titolo della pagina
+    document.title = 'I miei giochi';
+
     const fetchOwnedGames = async () => {
       try {
         const apiKey = '97B3D2854B59E628EE4C2C6D36E60312'; // Sostituisci con la tua chiave API 
@@ -45,6 +49,11 @@ const GameFeed = () => {
 
     fetchOwnedGames();
   }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
+
 
   const timeSinceLastPlayed = (timestamp: number) => {
     const lastPlayedDate = new Date(timestamp * 1000); // Converti in millisecondi
@@ -90,14 +99,16 @@ const GameFeed = () => {
     <div className='lg:container mx-auto'>
       <h1 className='mb-4'>Giochi Posseduti</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {games.map((game) => (
+        {currentGames.map((game) => (
           <div key={game.appid} className="flex flex-col p-4 rounded-lg">
             <h2 className="text-lg font-bold flex-grow">{game.name}</h2>
-            <img
-              src={`https://media.steampowered.com/steam/apps/${game.appid}/header.jpg`}
-              alt={game.name}
-              className="w-full h-auto rounded"
-            />
+            <a className='transition ease-in-out hover:scale-110' href={`https://store.steampowered.com/app/${game.appid}`}>
+              <img
+                src={`https://media.steampowered.com/steam/apps/${game.appid}/header.jpg`}
+                alt={game.name}
+                className="w-full h-auto rounded"
+              />
+            </a>
             <p>Ore giocate: {Math.floor(game.playtime_forever / 60)} ore</p>
             {game.playtime_forever > 0 ? (
               <p>Ultimo avvio: {timeSinceLastPlayed(game.rtime_last_played)}</p>
@@ -105,8 +116,20 @@ const GameFeed = () => {
           </div>
         ))}
       </div>
+
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            className={`px-4 py-2 mx-1 border ${index + 1 === currentPage ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
-};
+}
 
 export default GameFeed;

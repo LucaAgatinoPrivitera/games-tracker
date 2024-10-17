@@ -1,10 +1,14 @@
+import { useEffect } from 'react';
 import '../App.css';
 
 interface AboutProps {
     className?: string; // Prop per le classi CSS opzionali
 }
 
-const About: React.FC<AboutProps> = ({ className }) => {
+
+    const About: React.FC<AboutProps> = ({ className }) => {
+        // Titolo della pagina
+    document.title = 'About';
     return (
         // Qui funziona solo col backtick `, prima dava errore per il '
         <div className={`w-full background ${className}`}>
