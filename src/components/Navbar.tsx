@@ -22,6 +22,10 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
                     <Link className="no-underline text-white hover:text-slate-950 hover:bg-white rounded transition ease-in-out duration-300 px-2 py-1" to="/about">
                         About
                     </Link>
+
+                    <Link className="no-underline text-white hover:text-slate-950 hover:bg-white rounded transition ease-in-out duration-300 px-2 py-1" to="/games-news">
+                        News
+                    </Link>
                 </div>
             </div>
         </div>

@@ -54,7 +54,7 @@ const SteamProfile = () => {
 
     
     return (
-        <div className="bg-gray-800 text-white p-4 rounded-lg">
+        <div className="bg-gray-800 text-white p-4 rounded-lg pt-8">
             {profile ? (
                 <div className="text-center">
                     <h2 className="text-2xl font-bold">{profile.personaname}</h2>
