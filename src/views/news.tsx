@@ -7,6 +7,7 @@ interface NewsItem {
     author: string;
     contents: string;
     appid: number;
+    date: number;
 }
 
 const GameNews = () => {
@@ -30,8 +31,10 @@ const GameNews = () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
+
                 // Trasforma la risposta in JSON
                 const data = await response.json();
+                console.log(data)
                 setNews(data.appnews.newsitems);
             } catch (error) {
                 setError(error.message || 'Errore durante il recupero delle notizie');
@@ -55,6 +58,26 @@ const GameNews = () => {
         }
     };
 
+    const formatDate = (timestamp: number) => {
+        const date = new Date(timestamp * 1000); // Converti il timestamp in millisecondi
+        return date.toLocaleDateString('it-IT', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+    };
+
+    const formatDatePatchNotes = (timestamp: number) => {
+        const date = new Date(timestamp * 1000); // Converti il timestamp in millisecondi
+        return date.toLocaleDateString('it-IT', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+        });
+    };
+
     const totalPages = Math.ceil(news.length / NewsPerPage);
 
     return (
@@ -64,17 +87,36 @@ const GameNews = () => {
             {error ? (
                 <p>Errore: {error}</p>
             ) : (
-                <div>
+                <div className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4'>
                     {news.map((newsItem, index) => {
                         const imageUrl = extractImageUrl(newsItem.contents); // Estrai l'URL dell'immagine
-                        return (
-                            <div key={index} className='mb-4'>
-                                <h3 className='font-bold'>{newsItem.title}</h3>
-                                <a href={`${newsItem.url}`} className='text-blue-500 hover:underline'>Per saperne di più</a>
-                                <img src={imageUrl} alt={newsItem.title} className='mt-2 imgNews' />
-                                <p className=''>Autore: {newsItem.author || 'N/A'}</p>
-                            </div>
-                        );
+                        const formattedDate = formatDate(newsItem.date);
+                        const formattedDatePatchNotes = formatDatePatchNotes(newsItem.date);
+
+                        if (newsItem.author) {
+                            return (
+                                <div key={index} className='flex flex-col mb-4'>
+                                    {newsItem.title === 'Team Fortress 2 Update Released' ? (
+                                        // Se il titolo è una patch notes mi aggiunge la data
+                                        <div className='flex'>
+                                            <h3 className='font-bold flex-1'>{newsItem.title}</h3>
+                                            <h3 className='ms-2 font-bold'>{formattedDatePatchNotes}</h3>
+                                        </div>
+                                    ) : (
+                                        <h3 className='font-bold flex-1'>{newsItem.title}</h3>
+                                    )}
+
+                                    <a onClick={() => window.open(`${newsItem.url}`, `_blank`)} className='text-blue-500 hover:underline'>Per saperne di più</a>
+
+                                    <a href={`${newsItem.url}`} className='text-blue-500 hover:underline block'>
+                                        <img src={imageUrl} alt={newsItem.title} className='mt-2 ' />
+                                    </a>
+                                    <p className=''>Autore: {newsItem.author || 'N/A'}</p>
+                                    <p className='text-sm text-gray-500'>Data: {formattedDate}</p> {/* Mostra la data formattata per tutti */}
+                                </div>
+                            );
+                        }
+                        return null; // Assicurati di restituire null se non ci sono elementi
                     })}
                 </div>
             )}
@@ -92,6 +134,6 @@ const GameNews = () => {
             </div>
         </div>
     );
-};
+}
 
 export default GameNews;
