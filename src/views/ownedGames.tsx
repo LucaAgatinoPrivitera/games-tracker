@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+// Mi permette di usare le props
+import { useNavigate } from 'react-router-dom';
 
 interface OwnedGame {
   appid: number;
@@ -13,6 +15,8 @@ const GameFeed = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const gamesPerPage = 30; // Numero di giochi per pagina
+  const [selectedAppId, setSelectedAppId] = useState<number | null>(null); // Per l'appid selezionato
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -95,12 +99,17 @@ const GameFeed = () => {
   // Calcola il numero totale di pagine
   const totalPages = Math.ceil(games.length / gamesPerPage);
 
+  const handleGameClick = (appid: number, name: string) => {
+    navigate(`/news/${appid}/${encodeURIComponent(name)}`);
+    console.log(name)
+  };
+
   return (
     <div className='lg:container mx-auto pt-8'>
       <h1 className='mb-4'>Giochi Posseduti</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {currentGames.map((game) => (
-          <div key={game.appid} className="flex flex-col p-4 rounded-lg">
+          <div key={game.appid} className="flex flex-col p-4 rounded-lg" onClick={() => handleGameClick(game.appid, game.name)}>
             <h2 className="text-lg font-bold flex-grow">{game.name}</h2>
             <a className='transition ease-in-out hover:scale-110' href={`https://store.steampowered.com/app/${game.appid}`}>
               <img
