@@ -111,13 +111,37 @@ const GameFeed = () => {
         {currentGames.map((game) => (
           <div key={game.appid} className="flex flex-col p-4 rounded-lg" onClick={() => handleGameClick(game.appid, game.name)}>
             <h2 className="text-lg font-bold flex-grow">{game.name}</h2>
-            <a className='transition ease-in-out hover:scale-110' href={`https://store.steampowered.com/app/${game.appid}`}>
+
+
+            <div className="group relative">
               <img
                 src={`https://media.steampowered.com/steam/apps/${game.appid}/header.jpg`}
                 alt={game.name}
-                className="w-full h-auto rounded"
+                className="w-full h-auto rounded transition ease-in-out hover:scale-110"
               />
-            </a>
+
+              {/* Container per le icone grazie al group-hover posso cambiare l'opacità delle icone */}
+              <div className="opacity-0 absolute inset-0 flex items-center justify-center group-hover:opacity-100 transition-opacity duration-300 bgIcons">
+                <a
+                  href={`https://store.steampowered.com/app/${game.appid}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex
+items-center justify-center text-4xl iconOnHover text-white bg-black p-2 rounded-full mx-2 hover:text-white hover:scale-150 transition ease-in-out p-12 hover:border iconShadow"
+                >
+                  <i className="fa-brands fa-steam"></i>
+                </a>
+                <a
+                  onClick={() => handleGameClick(game.appid, game.name)}
+                  className="flex
+items-center justify-center text-4xl iconOnHover text-white bg-black p-2 rounded-full mx-2 cursor-pointer hover:text-white hover:scale-150 transition ease-in-out p-12 hover:border iconShadow"
+                >
+                  <i className="fas fa-newspaper"></i> {/* Icona Notizie */}
+                </a>
+              </div>
+            </div>
+
+
             <p>Ore giocate: {Math.floor(game.playtime_forever / 60)} ore</p>
             {game.playtime_forever > 0 ? (
               <p>Ultimo avvio: {timeSinceLastPlayed(game.rtime_last_played)}</p>

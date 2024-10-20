@@ -13,38 +13,38 @@ interface NewsItem {
     date: number;
 }
 
-// interface GameNewsProps {
-//     appid: number; // Riceviamo l'appid come prop
-// }
-
 const GameNews = () => {
     const { appid, name } = useParams<{ appid: string; name: string }>(); //Prende appid per aprire le news specifichi e il name per il nome appunto
     const [news, setNews] = useState<NewsItem[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true); // Stato di caricamento
     const [currentPage, setCurrentPage] = useState(1);
     const NewsPerPage = 10;
 
     useEffect(() => {
-        // Titolo generico della pagina
-        document.title = `Notizie sui Giochi`;
+        document.title = `Notizie di ${name}`;
 
         const fetchNewsForGame = async () => {
+            setLoading(true); // Inizia il caricamento
+
             try {
                 const response = await fetch(
                     `/api/ISteamNews/GetNewsForApp/v0002/?appid=${appid}&count=100&maxlength=300&format=json`
                 );
 
-                // Verifica se la risposta è ok
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                // Trasforma la risposta in JSON
                 const data = await response.json();
                 console.log(data);
                 setNews(data.appnews.newsitems);
+                setError(null); // Resetta l'errore se i dati vengono recuperati correttamente
             } catch (error) {
                 setError((error as Error).message || 'Errore durante il recupero delle notizie');
+                setNews([]); // Resetta le notizie se c'è un errore
+            } finally {
+                setLoading(false); // Caricamento terminato
             }
         };
 
@@ -83,25 +83,31 @@ const GameNews = () => {
     };
 
     const totalPages = Math.ceil(news.length / NewsPerPage);
-    const currentNews = news.slice((currentPage - 1) * NewsPerPage, currentPage * NewsPerPage); // Seleziona le notizie per la pagina corrente
+    const currentNews = news.slice((currentPage - 1) * NewsPerPage, currentPage * NewsPerPage);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [currentPage]);
-    console.log("Name:", name);
+
     return (
         <div className='lg:container mx-auto pt-8'>
             <h1 className='pb-4'>Notizie di: {name}</h1>
 
-            {news.length === 0 ? (
+            {loading ? (
+                <div>
+                    <h1>Caricamento delle notizie in corso...</h1> {/* Indica che i dati stanno arrivando */}
+                </div>
+            ) : error ? (
                 <div>
                     <h1>Errore 404</h1>
+                    <h1>{error}</h1> {/* Mostra il messaggio di errore */}
+                </div>
+            ) : news.length === 0 ? (
+                <div>
                     <h1>Ops. Nessuna notizia disponibile per questo gioco.</h1>
                 </div>
-
             ) : (
                 <div className='mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4'>
-
                     {currentNews.map((newsItem, index) => {
                         const imageUrl = extractImageUrl(newsItem.contents);
                         const formattedDate = formatDate(newsItem.date);
@@ -109,7 +115,6 @@ const GameNews = () => {
 
                         return (
                             <div key={index} className='flex flex-col mb-4'>
-                                
                                 {newsItem.title === 'Team Fortress 2 Update Released' ? (
                                     <div className='flex'>
                                         <h3 className='font-bold flex-1'>{newsItem.title}</h3>
