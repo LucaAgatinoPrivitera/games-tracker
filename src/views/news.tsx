@@ -91,7 +91,7 @@ const GameNews = () => {
 
     return (
         <div className='lg:container mx-auto pt-8'>
-            <h1 className='pb-4'>Notizie di: {name}</h1>
+            <h1 className='pb-4 font-bold'>Notizie di: {name}</h1>
 
             {loading ? (
                 <div>
@@ -124,7 +124,7 @@ const GameNews = () => {
                                     <h3 className='font-bold flex-1'>{newsItem.title}</h3>
                                 )}
 
-                                <a onClick={() => window.open(`${newsItem.url}`, `_blank`)} className='text-blue-500 hover:underline'>
+                                <a onClick={() => window.open(`${newsItem.url}`, `_blank`)} className='text-blue-500 hover:underline cursor-pointer hover:no-underline'>
                                     Per saperne di più
                                 </a>
 

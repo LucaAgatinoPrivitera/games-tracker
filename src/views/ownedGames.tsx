@@ -106,7 +106,7 @@ const GameFeed = () => {
 
   return (
     <div className='lg:container mx-auto pt-8'>
-      <h1 className='mb-4'>Giochi Posseduti</h1>
+      <h1 className='mb-4 font-bold'>Giochi Posseduti</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {currentGames.map((game) => (
           <div key={game.appid} className="flex flex-col p-4 rounded-lg" onClick={() => handleGameClick(game.appid, game.name)}>
