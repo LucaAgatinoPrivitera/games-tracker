@@ -25,9 +25,13 @@ const GameFeed = () => {
 
     const fetchOwnedGames = async () => {
       try {
-        const apiKey = '97B3D2854B59E628EE4C2C6D36E60312'; // Sostituisci con la tua chiave API 
-        const steamId = '76561198043560118'; // Sostituisci con il tuo SteamID 
+        // Così sono nascoste le key
+        const apiKey = import.meta.env.VITE_STEAM_API_KEY;
+        const steamId = import.meta.env.VITE_STEAM_ID;
+
+
         const response = await fetch(`/api/IPlayerService/GetOwnedGames/v0001/?key=${apiKey}&steamid=${steamId}&format=json&include_appinfo=true`);
+        // console.log("api", apiKey);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -100,8 +104,8 @@ const GameFeed = () => {
   const totalPages = Math.ceil(games.length / gamesPerPage);
 
   const handleGameClick = (appid: number, name: string) => {
+    setSelectedAppId(appid); // Aggiorna lo stato con l'appid selezionato
     navigate(`/news/${appid}/${encodeURIComponent(name)}`);
-    console.log(name)
   };
 
   return (
@@ -126,11 +130,15 @@ const GameFeed = () => {
                   href={`https://store.steampowered.com/app/${game.appid}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex
-items-center justify-center text-4xl iconOnHover text-white bg-black p-2 rounded-full mx-2 hover:text-white hover:scale-150 transition ease-in-out p-12 hover:border iconShadow"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Previene la propagazione dell'evento
+                  }}
+                  className="flex items-center justify-center text-4xl iconOnHover text-white bg-black p-2 rounded-full mx-2 hover:text-white hover:scale-150 transition ease-in-out p-12 hover:border iconShadow"
                 >
                   <i className="fa-brands fa-steam"></i>
                 </a>
+
+
                 <a
                   onClick={() => handleGameClick(game.appid, game.name)}
                   className="flex
@@ -138,6 +146,17 @@ items-center justify-center text-4xl iconOnHover text-white bg-black p-2 rounded
                 >
                   <i className="fas fa-newspaper"></i> {/* Icona Notizie */}
                 </a>
+
+                <a
+                  onClick={(e) => {
+                    e.stopPropagation(); // Impedisce la propagazione dell'evento click
+                    navigate(`/achievements/${game.appid}/${encodeURIComponent(game.name)}`);
+                  }}
+                  className="flex items-center justify-center text-4xl iconOnHover text-white bg-black p-2 rounded-full mx-2 cursor-pointer hover:text-white hover:scale-150 transition ease-in-out p-12 hover:border iconShadow"
+                >
+                  <i className="fas fa-trophy"></i> {/* Icona Obiettivi */}
+                </a>
+
               </div>
             </div>
 
