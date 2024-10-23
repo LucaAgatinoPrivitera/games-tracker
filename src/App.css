@@ -36,10 +36,11 @@
   }
 }
 
-.background{
+.background {
   background-color: #0A100D;
 }
-.text-for-background{
+
+.text-for-background {
   color: #F0F0F0;
 }
 
@@ -60,27 +61,52 @@
   transition: 0.2s ease-in-out;
 }
 
-#navbar{
+#navbar {
   height: 10vh;
 }
 
-.imgNews{
+.imgNews {
   width: 800px;
   height: 450px;
 }
 
-.bgIcons{
+.bgIcons {
   background-color: hsla(0, 0%, 0%, 0.400);
 }
 
-.iconOnHover{
+.iconOnHover {
   display: flex;
   display: inline-block;
-  text-align:center;
+  text-align: center;
   width: 4rem;
   height: 4rem;
 }
 
-.iconShadow:hover{
-  box-shadow: 0px 0px 30px 10px rgb(0, 0, 0) 
+.iconShadow:hover {
+  box-shadow: 0px 0px 30px 10px rgb(0, 0, 0)
+}
+
+.icon-shadow {
+  transition: 0.2s ease-in-out;
+}
+
+.icon-shadow:hover {
+  text-shadow: 0px 0px 30px;
+}
+
+.achievement-description{
+  position: relative;
+  top: -10px;
+  opacity: 0;
+  transition: 0.2s ease-in-out;
+}
+
+.achievement-description:hover{
+  top: 0px;
+  z-index: 0;
+}
+
+.achievement-icon {
+  width: '165px';
+  height: '165px'
 }
