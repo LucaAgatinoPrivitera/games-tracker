@@ -24,7 +24,7 @@ const GamesAchievements = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        document.title = `Achievements for ${name}`;
+        document.title = `Obiettivi di ${name}`;
 
         const fetchAchievementsForGame = async () => {
             setLoading(true);
@@ -95,7 +95,17 @@ const GamesAchievements = () => {
                                 src={achievement.achieved === 1 ? achievement.icon : achievement.icongray} // Icona normale se sbloccato, icona grigia se non sbloccato
                                 alt={achievement.name}
                             />
-                            <p className='text-center font-bold'>{achievement.displayName}</p>
+
+                            <div className='flex flex-col items-center'>
+                                <p className='w-full text-center font-bold h-12'>{achievement.displayName}</p> {/* Altezza fissa per il testo */}
+                                {achievement.achieved === 1 ? (
+                                    <p className="w-full fa-solid fa-check text-green-500 font-bold text-3xl text-center"></p>
+                                ) : (
+                                    <p className="w-full fa-solid fa-xmark text-red-500 font-bold text-3xl text-center"></p>
+                                )}
+                            </div>
+
+
                             {/* <p className='text-center pt-2 pb-4'>{achievement.description}</p> disattivato perché la richiesta non fornisce tutte le descrizioni */}
 
                         </div>
