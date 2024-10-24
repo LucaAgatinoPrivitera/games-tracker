@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface OwnedAchievements {
     appid: number;
@@ -23,6 +23,7 @@ const GamesAchievements = () => {
     const [achievements, setAchievements] = useState<AchievementDetail[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = `Obiettivi di ${name}`;
@@ -77,12 +78,21 @@ const GamesAchievements = () => {
 
     return (
         <div className='lg:container mx-auto pt-8'>
+            {/* Freccia per tornare indietro */}
+            <div className="flex gap-4">
+                <button onClick={() => navigate(-1)} className='mb-4 px-4 py-2 border text-white rounded border-0 back-shadow'>
+                    <i className="fa-solid fa-arrow-left"></i>
+                </button>
+                <h1 className='pb-4 font-bold'>Obiettivi di: {name}</h1>
+            </div>
+
+
             {loading ? (
                 <p>Caricamento...</p>
             ) : error ? (
                 <p>{error}</p>
             ) : (
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8'>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 pt-8'>
                     {achievements.map((achievement) => (
                         <div className='flex flex-col p-8 group' key={achievement.name}>
                             {/* Immagine achievement con altezza e larghezza controllata */}

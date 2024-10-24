@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // Mi permette di usare le prop
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface NewsItem {
     gid: string;
@@ -20,6 +20,7 @@ const GameNews = () => {
     const [loading, setLoading] = useState<boolean>(true); // Stato di caricamento
     const [currentPage, setCurrentPage] = useState(1);
     const NewsPerPage = 10;
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = `Notizie di ${name}`;
@@ -91,7 +92,13 @@ const GameNews = () => {
 
     return (
         <div className='lg:container mx-auto pt-8'>
-            <h1 className='pb-4 font-bold'>Notizie di: {name}</h1>
+            {/* Freccia per tornare indietro */}
+            <div className="flex gap-4">
+                <button onClick={() => navigate(-1)} className='mb-4 px-4 py-2 border text-white rounded border-0 back-shadow'>
+                    <i className="fa-solid fa-arrow-left"></i>
+                </button>
+                <h1 className='pb-4 font-bold'>Notizie di: {name}</h1>
+            </div>
 
             {loading ? (
                 <div>
