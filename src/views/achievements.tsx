@@ -91,6 +91,8 @@ const GamesAchievements = () => {
                 <p>Caricamento...</p>
             ) : error ? (
                 <p>{error}</p>
+            ) : achievements.length === 0 ? ( // Aggiunta della condizione per array vuoto
+                <h2 className='font-bold text-2xl'>Ops sembra che {name} non abbia nessun obiettivo</h2>
             ) : (
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 pt-8'>
                     {achievements.map((achievement) => (
@@ -132,7 +134,8 @@ const GamesAchievements = () => {
                         </div>
                     ))}
                 </div>
-            )}
+            )
+            }
         </div>
     );
 };

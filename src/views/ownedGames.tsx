@@ -20,6 +20,7 @@ const GameFeed = () => {
   const gamesPerPage = 30; // Numero di giochi per pagina
   const [selectedAppId, setSelectedAppId] = useState<number | null>(null); // Per l'appid selezionato
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
 
@@ -63,6 +64,10 @@ const GameFeed = () => {
     fetchOwnedGames();
   }, [currentPage]);
 
+  const filteredGames = games.filter(game =>
+    game.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
@@ -103,10 +108,14 @@ const GameFeed = () => {
   // Calcola i giochi da mostrare in base alla pagina corrente
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
-  const currentGames = games.slice(indexOfFirstGame, indexOfLastGame);
+  // const currentGames = games.slice(indexOfFirstGame, indexOfLastGame);
+
+  const currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
 
   // Calcola il numero totale di pagine
-  const totalPages = Math.ceil(games.length / gamesPerPage);
+  // const totalPages = Math.ceil(games.length / gamesPerPage);
+
+  const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
 
   const handleGameClick = (appid: number, name: string, currentPage: number) => {
     setSelectedAppId(appid);
@@ -117,7 +126,16 @@ const GameFeed = () => {
   return (
     <div className='lg:container mx-auto pt-8'>
       <h1 className='mb-4 font-bold'>Giochi Posseduti</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <input
+        type="text"
+        placeholder="Cerca giochi..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="mb-4 p-2 rounded border border-gray-300 focus:border-blue-500 focus:shadow-outline transition ease-in-out"
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition ease-in-out ">
         {currentGames.map((game) => (
           <div key={game.appid} className="flex flex-col p-4 rounded-lg">
             <h2 className="text-lg font-bold flex-grow">{game.name}</h2>
@@ -177,7 +195,7 @@ const GameFeed = () => {
       </div>
 
       <div className="flex justify-center mt-4">
-        {Array.from({ length: totalPages }, (_, index) => (
+        {totalPages > 1 && Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
             className={`px-4 py-2 mx-1 border ${index + 1 === currentPage ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}

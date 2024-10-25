@@ -94,14 +94,14 @@
   text-shadow: 0px 0px 30px;
 }
 
-.achievement-description{
+.achievement-description {
   position: relative;
   top: -10px;
   opacity: 0;
   transition: 0.2s ease-in-out;
 }
 
-.achievement-description:hover{
+.achievement-description:hover {
   top: 0px;
   z-index: 0;
 }
@@ -111,9 +111,53 @@
   height: '165px'
 }
 
-.back-shadow{
+.back-shadow {
   transition: 0.2s ease-in-out;
 }
-.back-shadow:hover{
+
+.back-shadow:hover {
   box-shadow: 0px 0px 20px rgb(231 229 228);
+}
+
+.search-bar {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.search-bar.open {
+  max-height: 50px;
+  /* o la dimensione della tua barra di ricerca */
+}
+
+.game-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.game-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.focused-border {
+  border-color: #4A90E2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+input[type="text"] {
+  border: 1px solid #ccc;
+  /* Colore del bordo normale */
+  border-radius: 5px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+.focused-border {
+  border-color: #4A90E2;
+  /* Colore del bordo al focus */
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+  outline: none;
+  /* Rimuove il bordo predefinito del browser */
 }
