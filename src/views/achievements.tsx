@@ -83,9 +83,9 @@ const GamesAchievements = () => {
                 <button onClick={() => navigate(-1)} className='mb-4 px-4 py-2 border text-white rounded border-0 back-shadow'>
                     <i className="fa-solid fa-arrow-left"></i>
                 </button>
+
                 <h1 className='pb-4 font-bold'>Obiettivi di: {name}</h1>
             </div>
-
 
             {loading ? (
                 <p>Caricamento...</p>
@@ -118,7 +118,6 @@ const GamesAchievements = () => {
                                     <p className='w-full text-center text-gray-400 flex-grow min-h-[2.5rem] relative transform translate-y-[-40px] opacity-0 transition-all duration-200 ease-in-out group-hover:translate-y-0 group-hover:opacity-100'>
                                         Obiettivo nascosto
                                     </p>
-
                                 )}
 
                                 {/* Icona di completamento dell'achievement */}
@@ -129,7 +128,6 @@ const GamesAchievements = () => {
                                         <p className="fa-solid fa-xmark text-red-500 font-bold text-3xl text-center mt-2 icon-shadow opacity-0 group-hover:opacity-100"></p>
                                     )}
                                 </div>
-
                             </div>
                         </div>
                     ))}
@@ -137,8 +135,6 @@ const GamesAchievements = () => {
             )}
         </div>
     );
-
-
 };
 
 export default GamesAchievements;

@@ -13,7 +13,10 @@ interface OwnedGame {
 const GameFeed = () => {
   const [games, setGames] = useState<OwnedGame[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(() => {
+    const savedPage = sessionStorage.getItem('currentPage');
+    return savedPage ? JSON.parse(savedPage) : 1;
+  });
   const gamesPerPage = 30; // Numero di giochi per pagina
   const [selectedAppId, setSelectedAppId] = useState<number | null>(null); // Per l'appid selezionato
   const navigate = useNavigate();
@@ -22,6 +25,8 @@ const GameFeed = () => {
 
     // Titolo della pagina
     document.title = 'I miei giochi';
+
+    sessionStorage.setItem('currentPage', JSON.stringify(currentPage));
 
     const fetchOwnedGames = async () => {
       try {
@@ -56,7 +61,7 @@ const GameFeed = () => {
     };
 
     fetchOwnedGames();
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -103,10 +108,11 @@ const GameFeed = () => {
   // Calcola il numero totale di pagine
   const totalPages = Math.ceil(games.length / gamesPerPage);
 
-  const handleGameClick = (appid: number, name: string) => {
-    setSelectedAppId(appid); // Aggiorna lo stato con l'appid selezionato
-    navigate(`/news/${appid}/${encodeURIComponent(name)}`);
+  const handleGameClick = (appid: number, name: string, currentPage: number) => {
+    setSelectedAppId(appid);
+    navigate(`/news/${appid}/${encodeURIComponent(name)}?page=${currentPage}`);
   };
+
 
   return (
     <div className='lg:container mx-auto pt-8'>
@@ -140,22 +146,23 @@ const GameFeed = () => {
 
 
                 <a
-                  onClick={() => handleGameClick(game.appid, game.name)}
-                  className="flex
-items-center justify-center text-4xl iconOnHover text-white bg-black p-2 rounded-full mx-2 cursor-pointer hover:text-white hover:scale-150 transition ease-in-out p-12 hover:border iconShadow"
+                  onClick={() => handleGameClick(game.appid, game.name, currentPage)}
+                  className="flex items-center justify-center text-4xl iconOnHover text-white bg-black p-2 rounded-full mx-2 cursor-pointer hover:text-white hover:scale-150 transition ease-in-out p-12 hover:border iconShadow"
                 >
                   <i className="fas fa-newspaper"></i> {/* Icona Notizie */}
                 </a>
 
+
                 <a
                   onClick={(e) => {
-                    e.stopPropagation(); // Impedisce la propagazione dell'evento click
-                    navigate(`/achievements/${game.appid}/${encodeURIComponent(game.name)}`);
+                    e.stopPropagation();
+                    navigate(`/achievements/${game.appid}/${encodeURIComponent(game.name)}?page=${currentPage}`);
                   }}
                   className="flex items-center justify-center text-4xl iconOnHover text-white bg-black p-2 rounded-full mx-2 cursor-pointer hover:text-white hover:scale-150 transition ease-in-out p-12 hover:border iconShadow"
                 >
                   <i className="fas fa-trophy"></i> {/* Icona Obiettivi */}
                 </a>
+
 
               </div>
             </div>
