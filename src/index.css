@@ -44,6 +44,16 @@ h1 {
   line-height: 1.1;
 }
 
+#logUser{
+  color: #E3E3E3;
+}
+
+#picUser{
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
